@@ -4,7 +4,19 @@ import numpy as np
 import cv2
 # import matplotlib.pyplot as plt
 import imutils
+from fuzzywuzzy import process
+from fuzzywuzzy import fuzz
 
+#pip install fuzzywuzzy[speedup]
+
+formNames = [
+    "CSIO - Ontario Application for Automobile Insurance Garage Form (OAF 4) - ON1002e 201609", 
+    "CSIO - Habitational Insurance Application CA2001e 201810",
+    "CSIO - Automobile Policy Change Request CA1401e 200609",
+    "CSIO - Automobile Loss Notice CA1501e 200609",
+    "CSIO - Habitational Insurance Application CA2001e 201810",
+    "CSIO - Ontario Application for Automobile Insurance ON1001e 201606"
+]
 
 
 def rotateImg():
@@ -47,6 +59,10 @@ def rotateImg():
     else: 
         return "Form Name not found"
 
+def returnBestMatch():
+    bestMatch = process.extractOne(rotateImg(), formNames)
+    print(bestMatch)
+    return bestMatch[0]
 
 
-rotateImg()
+returnBestMatch()
