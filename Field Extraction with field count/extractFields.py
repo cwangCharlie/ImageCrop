@@ -304,6 +304,12 @@ def sort_contours(cnts, method="left-to-right"):
 	# return the list of sorted contours and bounding boxes
 	return (cnts, boundingBoxes)
 
+def deleteExtraImages(path):
+    croppedImages = os.listdir(path)
+
+    for item in croppedImages:
+        if item.endswith("-0.jpg"):
+            os.remove(os.path.join(path, item))
 
 # Read the image
 img = scaleImg(cv2.imread('./oafpbm/2.jpg', 0))
@@ -318,7 +324,7 @@ img_bin = 255-img_bin
 cv2.imwrite("Image_bin.jpg",img_bin)
 
 # Defining a kernel length
-kernel_length = np.array(img).shape[1]//120
+kernel_length = np.array(img).shape[1]//140
  
 # A verticle kernel of (1 X kernel_length), which will detect all the verticle lines from the image.
 verticle_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (1, kernel_length))
@@ -368,6 +374,8 @@ for c in contours:
 		idx += 1
 		new_img = img[y:y+h, x:x+w]
 		cv2.imwrite('./Cropped/' + str(idx) + '--' + str(numInputs) + '.jpg', new_img)
+
+deleteExtraImages(dirpath + "/Cropped/")
 
 
 
